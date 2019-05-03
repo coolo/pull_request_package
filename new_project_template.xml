@@ -1,0 +1,26 @@
+<project name="name">
+  <title></title>
+  <description/>
+  <build>
+    <enable/>
+  </build>
+  <publish>
+    <disable/>
+  </publish>
+  <debuginfo>
+    <enable/>
+  </debuginfo>
+  <repository name="SLE_15">
+    <path project="openSUSE:Tools" repository="SLE_15"/>
+    <arch>x86_64</arch>
+  </repository>
+  <repository name="SLE_12_SP4">
+    <path project="openSUSE:Tools" repository="SLE_12_SP4"/>
+    <arch>x86_64</arch>
+  </repository>
+  <repository name="openSUSE_Tumbleweed">
+    <path project="openSUSE:Tools" repository="openSUSE_Factory"/>
+    <arch>x86_64</arch>
+  </repository>
+
+</project>
