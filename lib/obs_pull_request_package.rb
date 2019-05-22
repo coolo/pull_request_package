@@ -95,7 +95,7 @@ class ObsPullRequestPackage
   end
   
   def project_meta
-    file = File.read('new_project_template.xml')
+    file = File.read('config/new_project_template.xml')
     xml = Nokogiri::XML(file)
     xml.root['name'] = obs_project_name
     xml.css('title').first.content = "https://github.com/openSUSE/openSUSE-release-tools/pull/#{pull_request_number}"
