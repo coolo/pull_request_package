@@ -9,6 +9,7 @@ RUN useradd -m puller
 COPY . /code
 RUN chown -R puller /code
 RUN ln -s /config/config.yml /code/config/
+RUN ln -sf /config/new_project_template.xml /code/config/new_project_template.xml
 RUN ln -s /config/.oscrc /home/puller/
 
 WORKDIR /code
