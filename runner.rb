@@ -13,7 +13,7 @@ def line_seperator(pull_request)
 end
 
 new_packages = []
-client.pull_requests('openSUSE/openSUSE-release-tools').each do |pull_request|
+client.pull_requests('os-autoinst/openQA').each do |pull_request|
   next if pull_request.base.ref != 'master'
 
   logger.info('')
