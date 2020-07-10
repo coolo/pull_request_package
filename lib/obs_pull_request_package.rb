@@ -10,7 +10,7 @@ class ObsPullRequestPackage
   PullRequest = Struct.new(:number)
   
   def self.all(logger)
-    result = `osc api "search/project?match=starts-with(@name,'devel:openQA:TestGithub:PR')"`
+    result = `osc api "search/project?match=starts-with(@name,'devel:openQA:TestGithub:OPR-')"`
     xml = Nokogiri::XML(result)
     xml.xpath('//project').map do |project|
       pull_request_number = project.attribute('name').to_s.split('-').last.to_i
@@ -48,15 +48,15 @@ class ObsPullRequestPackage
   end
  
   def obs_project_name
-    "devel:openQA:TestGithub:PR-#{pull_request_number}"
+    "devel:openQA:TestGithub:OPR-#{pull_request_number}"
   end
   
   def url
-    "https://build.opensuse.org/package/show/#{obs_project_name}/openQA"
+    "https://build.opensuse.org/package/show/#{obs_project_name}/os-autoinst"
   end
   
   def last_commited_sha
-    result = capture2e_with_logs("osc api /source/#{obs_project_name}/openQA/_history")
+    result = capture2e_with_logs("osc api /source/#{obs_project_name}/os-autoinst/_history")
     node = Nokogiri::XML(result).root
     return '' unless node
     node.xpath('.//revision/comment').last.content
@@ -98,18 +98,18 @@ class ObsPullRequestPackage
     file = File.read('config/new_project_template.xml')
     xml = Nokogiri::XML(file)
     xml.root['name'] = obs_project_name
-    xml.css('title').first.content = "https://github.com/os-autoinst/openQA/pull/#{pull_request_number}"
+    xml.css('title').first.content = "https://github.com/os-autoinst/os-autoinst/pull/#{pull_request_number}"
     xml.to_s
   end
   
   def create_package
-    capture2e_with_logs("osc meta pkg #{obs_project_name} openQA --file new_package_template.xml")
+    capture2e_with_logs("osc meta pkg #{obs_project_name} os-autoinst --file new_package_template.xml")
   end
   
   def copy_files
     Dir.mktmpdir do |dir|
-      capture2e_with_logs("osc co devel:openQA/openQA --output-dir #{dir}/template")
-      capture2e_with_logs("osc co #{obs_project_name}/openQA --output-dir #{dir}/#{obs_project_name}")
+      capture2e_with_logs("osc co devel:openQA/os-autoinst --output-dir #{dir}/template")
+      capture2e_with_logs("osc co #{obs_project_name}/os-autoinst --output-dir #{dir}/#{obs_project_name}")
       copy_package_files(dir)
       capture2e_with_logs("osc ar #{dir}/#{obs_project_name}")
       capture2e_with_logs("osc commit #{dir}/#{obs_project_name} -m '#{commit_sha}'")
